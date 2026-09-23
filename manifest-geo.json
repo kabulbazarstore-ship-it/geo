@@ -1,0 +1,17 @@
+{
+  "name": "GEO — شرکت فرصت‌های تحصیلی غرجستان",
+  "short_name": "GEO",
+  "description": "سیستم حساب و کتاب شرکت فرصت‌های تحصیلی غرجستان",
+  "start_url": "geo-login.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1929",
+  "theme_color": "#0a1929",
+  "lang": "fa",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icons/geo-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/geo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

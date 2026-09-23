@@ -1,5 +1,6 @@
 /* ============================================
    GEO — Firebase Configuration
+   شرکت فرصت‌های تحصیلی غرجستان
    ============================================ */
 
 var firebaseConfig = {
@@ -12,7 +13,6 @@ var firebaseConfig = {
   measurementId: "G-JP8EKKZ5J2"
 };
 
-/* مقادیر ثابت */
 var GEO_SETTINGS = {
   APP_NAME: 'GEO — Gharjistan Educational Opportunities',
   APP_SHORT: 'GEO',

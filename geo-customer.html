@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a1929">
+<title>پنل مشتری | GEO</title>
+<link rel="manifest" href="manifest-geo.json">
+<link rel="icon" type="image/png" href="icons/geo-192.png">
+<style>
+:root{--navy:#0a1929;--navy-2:#102a43;--navy-3:#1a3a5c;--gold:#d4af37;--gold-2:#f4d03f;--gold-soft:rgba(212,175,55,0.15);--text:#e8eef5;--text-dim:#8ba3bd;--card:#132f4c;--border:rgba(212,175,55,0.22);--danger:#e74c3c;--success:#2ecc71;--info:#3498db;--warning:#f39c12}
+body.light{--navy:#f5f7fa;--navy-2:#fff;--navy-3:#e8eef5;--text:#1a2942;--text-dim:#6b7d95;--card:#fff;--border:rgba(212,175,55,0.35)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{font-family:Tahoma,'Segoe UI',sans-serif;background:var(--navy);color:var(--text);overflow-x:hidden;min-height:100vh;padding-bottom:40px;transition:background .3s,color .3s}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit}
+::-webkit-scrollbar{display:none}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(circle at 15% 15%,rgba(26,58,92,0.85) 0%,transparent 55%),radial-gradient(circle at 85% 85%,rgba(212,175,55,0.1) 0%,transparent 55%),linear-gradient(160deg,#0a1929 0%,#0d2137 50%,#050d17 100%)}
+body.light .bg{background:radial-gradient(circle at 15% 15%,rgba(212,175,55,0.15) 0%,transparent 55%),radial-gradient(circle at 85% 85%,rgba(26,90,150,0.1) 0%,transparent 55%),linear-gradient(160deg,#f5f7fa 0%,#e8eef5 50%,#dfe6ee 100%)}
+.page{position:relative;z-index:2}
+.header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(10,25,41,0.98),rgba(10,25,41,0.92));backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,0.15);padding:12px 14px}
+body.light .header{background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.92))}
+.header-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.header-brand{display:flex;align-items:center;gap:8px}
+.logo-mini{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.logo-mini img{width:100%;height:100%;object-fit:contain}
+.brand-txt{font-size:12px;font-weight:800;color:var(--gold);line-height:1.2}
+.brand-txt small{display:block;font-size:9px;color:var(--text-dim);font-weight:600;margin-top:1px}
+.header-actions{display:flex;gap:6px}
+.header-btn{width:36px;height:36px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.header-btn:active{transform:scale(0.92)}
+.header-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2}
+.header-btn .sun{display:none}.header-btn .moon{display:block}
+body.light .header-btn .sun{display:block}body.light .header-btn .moon{display:none}
+.header-btn.logout svg{stroke:var(--danger)}
+.welcome-box{margin-top:10px;padding:12px;background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05));border:1px solid var(--border);border-radius:14px;text-align:center;position:relative}
+.welcome-box .hello{font-size:10.5px;color:var(--text-dim)}
+.welcome-box .name{font-size:16px;font-weight:900;color:var(--gold);margin-top:4px;line-height:1.2}
+.welcome-box .phone{font-size:10px;color:var(--text-dim);margin-top:4px;direction:ltr;font-family:monospace}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:12px 12px 0;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:10px 12px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);font-size:11.5px;font-weight:700;color:var(--text-dim);display:flex;align-items:center;gap:5px;transition:all .2s;position:relative}
+.tab.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.tab svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.tab-badge{position:absolute;top:-6px;left:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--danger);color:#fff;font-size:10px;font-weight:900;display:none;align-items:center;justify-content:center;border:2px solid var(--navy)}
+body.light .tab-badge{border-color:var(--navy-2)}
+.tab-badge.show{display:flex}
+.wrap{padding:16px 12px 30px;max-width:640px;margin:0 auto}
+.section{display:none}
+.section.active{display:block;animation:fadeUp .3s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.block{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
+.block-title{font-size:13px;font-weight:800;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.block-title .accent{display:inline-block;width:4px;height:14px;border-radius:2px;background:linear-gradient(180deg,var(--gold-2),var(--gold))}
+.block-title svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2}
+.form-row{margin-bottom:12px}
+.form-row label{font-size:11.5px;color:var(--text-dim);font-weight:700;display:block;margin-bottom:6px}
+.form-row input,.form-row select,.form-row textarea{width:100%;padding:12px 14px;background:var(--navy-2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;outline:none;transition:all .2s}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.form-row textarea{min-height:70px;resize:vertical}
+.btn-primary{width:100%;height:50px;border-radius:12px;background:linear-gradient(135deg,#f4d03f,#d4af37);color:var(--navy);font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;box-shadow:0 6px 20px rgba(212,175,55,0.3);transition:transform .2s}
+.btn-primary:active{transform:scale(0.97)}
+.btn-primary:disabled{opacity:0.6}
+.btn-primary svg{width:20px;height:20px;stroke:var(--navy);fill:none;stroke-width:2.5}
+.btn-outline{width:100%;height:46px;border-radius:12px;background:var(--navy-2);border:1.5px solid var(--border);color:var(--gold);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.btn-outline svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.5}
+.btn-danger{background:rgba(231,76,60,0.15);border-color:var(--danger);color:var(--danger)}
+.warning-box{background:rgba(243,156,18,0.12);border:1px solid rgba(243,156,18,0.4);border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start}
+.warning-box svg{width:20px;height:20px;stroke:var(--warning);fill:none;stroke-width:2;flex-shrink:0;margin-top:1px}
+.warning-box .txt{font-size:11.5px;color:var(--text);line-height:1.8}
+.warning-box .txt strong{color:var(--warning)}
+.upload-area{background:var(--navy-2);border:2px dashed var(--border);border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px}
+.upload-area:active{transform:scale(0.98);background:var(--gold-soft);border-color:var(--gold)}
+.upload-area svg{width:40px;height:40px;stroke:var(--gold);fill:none;stroke-width:1.5;margin-bottom:8px}
+.upload-area .t1{font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px}
+.upload-area .t2{font-size:11px;color:var(--text-dim)}
+.upload-area .t2 strong{color:var(--gold)}
+.preview-box{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:14px;display:none}
+.preview-box.show{display:block}
+.preview-box .pv-title{font-size:11px;color:var(--text-dim);margin-bottom:8px;font-weight:700}
+.preview-box img{width:100%;max-height:220px;object-fit:contain;border-radius:10px;margin-bottom:8px;background:var(--card)}
+.preview-box .pv-name{font-size:11.5px;color:var(--text);word-break:break-all;text-align:center}
+.preview-box .pv-size{font-size:10px;color:var(--text-dim);text-align:center;margin-top:4px}
+.progress-bar{height:8px;background:var(--navy-2);border-radius:4px;overflow:hidden;margin-top:10px;display:none}
+.progress-bar.show{display:block}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-2),var(--gold));border-radius:4px;transition:width .3s;width:0%}
+.doc-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start}
+.doc-icon{width:44px;height:44px;border-radius:10px;background:var(--gold-soft);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.doc-icon svg{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:2}
+.doc-body{flex:1;min-width:0}
+.doc-name{font-size:12.5px;font-weight:800;color:var(--text);margin-bottom:4px;word-break:break-all}
+.doc-type{font-size:10.5px;color:var(--text-dim);margin-bottom:6px}
+.doc-status{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:10px;font-size:10.5px;font-weight:800}
+.doc-status.pending{background:rgba(243,156,18,0.15);color:var(--warning);border:1px solid rgba(243,156,18,0.3)}
+.doc-status.approved{background:rgba(46,204,113,0.15);color:var(--success);border:1px solid rgba(46,204,113,0.3)}
+.doc-status.rejected{background:rgba(231,76,60,0.15);color:var(--danger);border:1px solid rgba(231,76,60,0.3)}
+.doc-status svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5}
+.doc-actions{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.mini-btn{padding:6px 12px;border-radius:8px;background:var(--navy-2);border:1px solid var(--border);color:var(--gold);font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;text-decoration:none}
+.mini-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.mini-btn.danger{background:rgba(231,76,60,0.15);border-color:var(--danger);color:var(--danger)}
+.sch-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.sch-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.sch-title{font-size:13.5px;font-weight:900;color:var(--gold);line-height:1.4}
+.sch-country{padding:3px 10px;border-radius:10px;background:var(--gold-soft);border:1px solid var(--border);font-size:10px;color:var(--gold);font-weight:700;white-space:nowrap}
+.sch-info{font-size:11.5px;color:var(--text-dim);line-height:2}
+.sch-info strong{color:var(--text)}
+.sch-deadline{margin-top:8px;padding:8px 12px;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.3);border-radius:8px;font-size:11px;color:var(--danger);font-weight:700;text-align:center}
+.sch-link{margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:10px;background:var(--gold);color:var(--navy);font-weight:800;font-size:12px;text-decoration:none}
+.sch-link svg{width:14px;height:14px;stroke:var(--navy);fill:none;stroke-width:2.5}
+.empty{text-align:center;padding:40px 20px;color:var(--text-dim)}
+.empty svg{width:60px;height:60px;stroke:var(--text-dim);fill:none;stroke-width:1.5;margin-bottom:12px;opacity:0.4}
+.empty p{font-size:13px;font-weight:700;color:var(--text)}
+.empty span{font-size:11.5px;display:block;margin-top:4px}
+.loading{text-align:center;padding:40px;color:var(--text-dim)}
+.spinner{width:40px;height:40px;border:3px solid var(--gold-soft);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--gold);color:var(--navy);padding:12px 24px;border-radius:12px;font-size:13px;font-weight:800;z-index:400;transition:transform .3s;white-space:nowrap;max-width:90%;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--success);color:#fff}
+.toast.error{background:var(--danger);color:#fff}
+.about-title{font-size:14px;font-weight:900;color:var(--gold);text-align:center;margin-bottom:4px}
+.about-en{font-size:10.5px;color:var(--text-dim);text-align:center;direction:ltr;margin-bottom:8px}
+.about-slogan{text-align:center;margin-bottom:14px}
+.about-slogan span{display:inline-block;padding:6px 14px;background:var(--gold-soft);border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--gold);font-weight:700}
+.about-services{font-size:11.5px;color:var(--text-dim);line-height:2;margin-bottom:12px}
+.about-services strong{color:var(--gold);display:block;margin-bottom:6px}
+.about-box{background:rgba(212,175,55,0.06);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px}
+.about-box .line{font-size:11px;color:var(--text-dim);line-height:2}
+.about-box .line strong{color:var(--gold)}
+.about-box .line a{color:var(--gold);text-decoration:underline}
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+body.light .modal-overlay{background:rgba(255,255,255,0.75)}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.modal-sheet{width:100%;max-width:560px;max-height:90vh;background:linear-gradient(180deg,#132f4c 0%,#0a1929 100%);border-radius:22px 22px 0 0;border-top:1px solid var(--border);overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(0.34,1.56,0.64,1);padding-bottom:20px}
+body.light .modal-sheet{background:linear-gradient(180deg,#fff 0%,#f5f7fa 100%)}
+.modal-overlay.show .modal-sheet{transform:translateY(0)}
+.modal-handle{width:44px;height:4px;border-radius:2px;background:rgba(212,175,55,0.4);margin:10px auto 0}
+.modal-head{padding:16px 20px 8px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(212,175,55,0.1)}
+.modal-head h3{font-size:15px;color:var(--gold);font-weight:800}
+.modal-close{width:34px;height:34px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.modal-close svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2.5}
+.modal-body{padding:16px 20px}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="page">
+  <header class="header">
+    <div class="header-top">
+      <div class="header-brand">
+        <div class="logo-mini"><img src="icons/geo-192.png" alt="GEO"></div>
+        <div class="brand-txt">پنل مشتری<small id="userNameHeader">مشتری</small></div>
+      </div>
+      <div class="header-actions">
+        <button class="header-btn" onclick="toggleTheme()">
+          <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="header-btn" onclick="loadMyDocuments()"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+        <button class="header-btn logout" onclick="logout()"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+      </div>
+    </div>
+    <div class="welcome-box">
+      <div class="hello">خوش آمدید</div>
+      <div class="name" id="userNameDisplay">—</div>
+      <div class="phone" id="userPhoneDisplay">—</div>
+    </div>
+  </header>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="upload"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>آپلود اسناد</button>
+    <button class="tab" data-tab="documents"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>اسناد من<span class="tab-badge" id="docsBadge"></span></button>
+    <button class="tab" data-tab="scholarships"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>بورسیه‌ها</button>
+    <button class="tab" data-tab="about"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>درباره</button>
+  </div>
+
+  <div class="wrap">
+    <section class="section active" id="sec-upload">
+      <div class="warning-box">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div class="txt"><strong>لطفاً دقت کنید:</strong><br>اسناد خود را به صورت <strong>اسکن واضح و خوانا</strong> آپلود کنید. عکس‌های تار یا ناقص تأیید نمی‌شوند.</div>
+      </div>
+
+      <div class="block">
+        <div class="block-title"><span class="accent"></span><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>آپلود سند جدید</div>
+
+        <div class="form-row"><label>عنوان سند</label><input type="text" id="docTitle" placeholder="مثلاً: پاسپورت، تذکره، سند تحصیلی"></div>
+
+        <div class="form-row"><label>نوع سند</label>
+          <select id="docType">
+            <option value="پاسپورت">پاسپورت</option>
+            <option value="تذکره">تذکره</option>
+            <option value="سند تحصیلی">سند تحصیلی</option>
+            <option value="ترجمه رسمی">ترجمه رسمی</option>
+            <option value="مدرک زبان">مدرک زبان</option>
+            <option value="عکس پاسپورتی">عکس پاسپورتی</option>
+            <option value="سایر">سایر</option>
+          </select>
+        </div>
+
+        <div class="form-row"><label>یادداشت (اختیاری)</label><textarea id="docNotes" placeholder="هر توضیح اضافه..."></textarea></div>
+
+        <div class="upload-area" onclick="document.getElementById('docFile').click()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="t1">انتخاب فایل یا عکس</div>
+          <div class="t2">JPG, PNG, PDF — حداکثر <strong>۲۰ مگابایت</strong></div>
+        </div>
+        <input type="file" id="docFile" accept="image/*,application/pdf" style="display:none" onchange="onFileSelect(event)">
+
+        <div class="preview-box" id="previewBox">
+          <div class="pv-title">پیش‌نمایش فایل:</div>
+          <div id="previewContent"></div>
+        </div>
+
+        <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+
+        <button class="btn-primary" id="uploadBtn" onclick="uploadDocument()" disabled>
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          آپلود سند
+        </button>
+      </div>
+    </section>
+
+    <section class="section" id="sec-documents">
+      <div class="block">
+        <div class="block-title"><span class="accent"></span><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>اسناد من</div>
+        <div id="docsList"><div class="loading"><div class="spinner"></div><p>در حال بارگذاری...</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="sec-scholarships">
+      <div class="block">
+        <div class="block-title"><span class="accent"></span><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg>بورسیه‌های موجود</div>
+        <div id="schList"><div class="loading"><div class="spinner"></div><p>در حال بارگذاری...</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="sec-about">
+      <div class="block">
+        <div class="block-title"><span class="accent"></span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>درباره شرکت</div>
+        <div class="about-title">شرکت فرصت‌های تحصیلی غرجستان</div>
+        <div class="about-en">Gharjistan Educational Opportunities</div>
+        <div class="about-slogan"><span>غرجستان — دروازه‌ی فرصت‌ها</span></div>
+        <div class="about-services"><strong>خدمات ما:</strong>سیاحتی و گردشگری<br>مشاوره تحصیلی و بورسیه<br>کاریابی و فرصت‌های کاری<br>خدمات درمانی و ترانسفر بیمار<br>خدمات تجاری و مشاوره</div>
+        <div class="about-box"><div class="line"><strong>آدرس:</strong><br>دشت برچی، قلعه نو، روبروی تالار بهار سراب، مارکیت نبوت، منزل ۳، دفتر ۴<br><strong>تماس:</strong> 0784030240 / 0707846291<br><strong>کانال واتساپ:</strong><br><a href="https://whatsapp.com/channel/0029Vb3BpwQFnSzDK62fxA2l" target="_blank">کلیک کنید</a></div></div>
+        <div style="text-align:center;font-size:10.5px;color:var(--text-dim);padding-top:10px;border-top:1px solid var(--border)">نسخه ۱.۰ — بیش از چندین سال تجربه</div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+/* ============================================================
+   GEO — Customer Panel with Google Drive
+   ============================================================ */
+var K_THEME='geo_theme',K_SESSION='geo_session';
+var SESSION=null,db=null;
+var selectedFile=null;
+var myDocs=[],allScholarships=[];
+
+/* ⚠️ Apps Script Web App URL */
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwslJchKniEldI4bchQ1AlhPhP-D90t6XoVqAnxdCWWg09NFrovqmg8UkX520my-c5Y0w/exec';
+var SECRET_TOKEN = 'geo-secret-2024-kabul-bazar';
+var MAX_FILE_SIZE = 20 * 1024 * 1024; /* 20MB */
+
+function toPersian(n){var p=['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];return String(n).replace(/\d/g,function(d){return p[d];});}
+function esc(s){if(s===null||s===undefined)return '';return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function showToast(msg,type){var el=document.getElementById('toast');el.textContent=msg;el.className='toast show'+(type?' '+type:'');clearTimeout(el._t);el._t=setTimeout(function(){el.className='toast';},3200);}
+function timeAgo(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return 'همین الان';if(s<3600)return Math.floor(s/60)+' دقیقه پیش';if(s<86400)return Math.floor(s/3600)+' ساعت پیش';return Math.floor(s/86400)+' روز پیش';}
+function fmtSize(b){if(b<1024)return b+' B';if(b<1048576)return (b/1024).toFixed(1)+' KB';return (b/1048576).toFixed(2)+' MB';}
+function toJalali(iso){if(!iso)return '';var p=iso.split('-');var gy=parseInt(p[0]),gm=parseInt(p[1]),gd=parseInt(p[2]);var gdm=[0,31,59,90,120,151,181,212,243,273,304,334];var jy=(gy<=1600)?0:979;gy-=(gy<=1600)?621:1600;var gy2=(gm>2)?(gy+1):gy;var days=(365*gy)+Math.floor((gy2+3)/4)-Math.floor((gy2+99)/100)+Math.floor((gy2+399)/400)-80+gd+gdm[gm-1];jy+=33*Math.floor(days/12053);days%=12053;jy+=4*Math.floor(days/1461);days%=1461;if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365;}var jm=(days<186)?1+Math.floor(days/31):7+Math.floor((days-186)/30);var jd=1+((days<186)?(days%31):((days-186)%30));var months=['حمل','ثور','جوزا','سرطان','اسد','سنبله','میزان','عقرب','قوس','جدی','دلو','حوت'];return toPersian(jd)+' '+months[jm-1]+' '+toPersian(jy);}
+
+function applyTheme(){var t=localStorage.getItem(K_THEME)||'dark';document.body.classList.toggle('light',t==='light');var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=t==='light'?'#f5f7fa':'#0a1929';}
+function toggleTheme(){var t=localStorage.getItem(K_THEME)||'dark';localStorage.setItem(K_THEME,t==='light'?'dark':'light');applyTheme();}
+
+function checkAuth(){var s=localStorage.getItem(K_SESSION);if(!s){location.replace('geo-login.html');return false;}try{var d=JSON.parse(s);if(!d||!d.loggedIn||d.role!=='customer'){location.replace('geo-login.html');return false;}SESSION=d;return true;}catch(e){location.replace('geo-login.html');return false;}}
+function logout(){localStorage.removeItem(K_SESSION);sessionStorage.removeItem(K_SESSION);location.replace('geo-login.html');}
+
+function initFirebase(){if(typeof firebase==='undefined')return false;try{if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);db=firebase.firestore();return true;}catch(e){return false;}}
+
+/* ===== File Select with 20MB Limit ===== */
+function onFileSelect(ev){
+  var f=ev.target.files[0];
+  if(!f)return;
+
+  /* Check size limit 20MB */
+  if(f.size > MAX_FILE_SIZE){
+    var sizeMB=(f.size/(1024*1024)).toFixed(2);
+    showToast('❌ فایل '+sizeMB+' مگابایت است — حداکثر ۲۰ مگابایت مجاز است','error');
+    ev.target.value='';
+    selectedFile=null;
+    document.getElementById('previewBox').classList.remove('show');
+    document.getElementById('uploadBtn').disabled=true;
+    return;
+  }
+
+  if(f.size < 500){
+    showToast('⚠️ فایل خیلی کوچک است — لطفاً سند واضح آپلود کنید','error');
+    ev.target.value='';
+    return;
+  }
+
+  selectedFile=f;
+
+  var preview=document.getElementById('previewBox');
+  var content=document.getElementById('previewContent');
+  var html='';
+
+  if(f.type.indexOf('image')>-1){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      html='<img src="'+e.target.result+'" alt="preview">';
+      html+='<div class="pv-name">'+esc(f.name)+'</div>';
+      html+='<div class="pv-size" style="color:var(--success);font-weight:700">حجم: '+fmtSize(f.size)+' — ✅ مجاز</div>';
+      content.innerHTML=html;
+      preview.classList.add('show');
+    };
+    reader.readAsDataURL(f);
+  } else {
+    html='<div style="text-align:center;padding:20px"><svg viewBox="0 0 24 24" style="width:60px;height:60px;stroke:var(--gold);fill:none;stroke-width:1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>';
+    html+='<div class="pv-name">'+esc(f.name)+'</div>';
+    html+='<div class="pv-size" style="color:var(--success);font-weight:700">حجم: '+fmtSize(f.size)+' — ✅ مجاز</div>';
+    content.innerHTML=html;
+    preview.classList.add('show');
+  }
+
+  document.getElementById('uploadBtn').disabled=false;
+}
+
+/* ===== Read file as Base64 ===== */
+function fileToBase64(file){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var base64=e.target.result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ===== Upload Document via Apps Script ===== */
+async function uploadDocument(){
+  if(!selectedFile){showToast('فایلی انتخاب نشده','error');return;}
+
+  /* Double check */
+  if(selectedFile.size > MAX_FILE_SIZE){
+    showToast('❌ حجم فایل بیشتر از ۲۰ مگابایت است','error');
+    return;
+  }
+
+  var title=document.getElementById('docTitle').value.trim();
+  if(!title){showToast('عنوان سند را وارد کنید','error');return;}
+
+  var btn=document.getElementById('uploadBtn');
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner" style="width:20px;height:20px;border-width:2px;margin:0"></div> در حال آپلود...';
+
+  var progBar=document.getElementById('progressBar');
+  var progFill=document.getElementById('progressFill');
+  progBar.classList.add('show');
+  progFill.style.width='10%';
+
+  try{
+    var docType=document.getElementById('docType').value;
+    var notes=document.getElementById('docNotes').value.trim();
+
+    /* Convert to base64 */
+    progFill.style.width='30%';
+    var base64=await fileToBase64(selectedFile);
+    progFill.style.width='50%';
+
+    /* Send to Apps Script */
+    var formData=new FormData();
+    formData.append('action','upload');
+    formData.append('token',SECRET_TOKEN);
+    formData.append('fileName',selectedFile.name);
+    formData.append('mimeType',selectedFile.type||'application/octet-stream');
+    formData.append('fileData',base64);
+    formData.append('customerId',SESSION.userId);
+    formData.append('customerName',SESSION.name);
+    formData.append('docTitle',title);
+
+    progFill.style.width='70%';
+
+    var response=await fetch(APPS_SCRIPT_URL,{
+      method:'POST',
+      body:formData
+    });
+
+    progFill.style.width='90%';
+    var result=await response.json();
+
+    if(!result.success){
+      throw new Error(result.error||'upload_failed');
+    }
+
+    progFill.style.width='100%';
+
+    /* Save metadata to Firestore */
+    var docId='doc_'+Date.now()+'_'+Math.floor(Math.random()*1000);
+    var docData={
+      customerId:SESSION.userId,
+      customerName:SESSION.name,
+      customerPhone:SESSION.phone||'',
+      title:title,
+      type:docType,
+      notes:notes,
+      fileName:selectedFile.name,
+      fileSize:selectedFile.size,
+      fileType:selectedFile.type,
+      driveFileId:result.fileId,
+      driveFileName:result.fileName,
+      status:'pending',
+      createdAt:Date.now(),
+      createdDate:new Date().toISOString(),
+      approvedBy:'',
+      approvedAt:0,
+      rejectedReason:''
+    };
+
+    if(db){
+      await db.collection('documents').doc(docId).set(docData);
+      await db.collection(GEO_SETTINGS.COLLECTION_LOGS).add({
+        userId:SESSION.userId,
+        userName:SESSION.name,
+        action:'customer_upload_doc',
+        details:'مشتری '+SESSION.name+' سند جدید آپلود کرد: '+title+' ('+fmtSize(selectedFile.size)+')',
+        timestamp:Date.now(),
+        date:new Date().toISOString(),
+        targetRole:'employee'
+      });
+    }
+
+    showToast('✅ سند با موفقیت آپلود شد','success');
+
+    /* Reset */
+    document.getElementById('docTitle').value='';
+    document.getElementById('docNotes').value='';
+    document.getElementById('docFile').value='';
+    document.getElementById('previewBox').classList.remove('show');
+    selectedFile=null;
+
+    /* Hide progress */
+    setTimeout(function(){
+      progBar.classList.remove('show');
+      progFill.style.width='0%';
+    },1000);
+
+    /* Reload */
+    loadMyDocuments();
+
+    /* Switch to docs */
+    document.querySelector('.tab[data-tab="documents"]').click();
+
+  }catch(e){
+    console.error(e);
+    showToast('❌ خطا در آپلود. دوباره تلاش کنید','error');
+    progBar.classList.remove('show');
+    progFill.style.width='0%';
+  }
+
+  btn.disabled=false;
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--navy);fill:none;stroke-width:2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> آپلود سند';
+}
+
+/* ===== Load My Documents ===== */
+async function loadMyDocuments(){
+  var el=document.getElementById('docsList');
+  if(!db){el.innerHTML='<div class="empty"><p>Firebase متصل نیست</p></div>';return;}
+  try{
+    var snap=await db.collection('documents').where('customerId','==',SESSION.userId).get();
+    myDocs=[];
+    snap.forEach(function(doc){myDocs.push(Object.assign({id:doc.id},doc.data()));});
+    myDocs.sort(function(a,b){return b.createdAt-a.createdAt;});
+    renderMyDocs();
+    updateBadge();
+  }catch(e){
+    console.error(e);
+    el.innerHTML='<div class="empty"><p>خطا در بارگذاری</p></div>';
+  }
+}
+
+function updateBadge(){
+  var pending=myDocs.filter(function(d){return d.status==='pending';}).length;
+  var badge=document.getElementById('docsBadge');
+  if(pending>0){badge.textContent=toPersian(pending);badge.classList.add('show');}
+  else{badge.classList.remove('show');}
+}
+
+function renderMyDocs(){
+  var el=document.getElementById('docsList');
+  if(myDocs.length===0){
+    el.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p>هنوز سندی آپلود نکرده‌اید</p><span>از تب آپلود اسناد شروع کنید</span></div>';
+    return;
+  }
+  var html='';
+  myDocs.forEach(function(d){
+    var statusInfo={
+      pending:{txt:'در انتظار تأیید',icon:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'},
+      approved:{txt:'تأیید شده',icon:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'},
+      rejected:{txt:'رد شده',icon:'<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'}
+    };
+    var s=statusInfo[d.status]||statusInfo.pending;
+    var docIcon=(d.fileType||'').indexOf('image')>-1?'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>':'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>';
+    html+='<div class="doc-item">'+
+      '<div class="doc-icon"><svg viewBox="0 0 24 24">'+docIcon+'</svg></div>'+
+      '<div class="doc-body">'+
+        '<div class="doc-name">'+esc(d.title)+'</div>'+
+        '<div class="doc-type">'+esc(d.type)+' • '+fmtSize(d.fileSize||0)+' • '+timeAgo(d.createdAt)+'</div>'+
+        '<span class="doc-status '+d.status+'"><svg viewBox="0 0 24 24">'+s.icon+'</svg>'+s.txt+'</span>'+
+        (d.rejectedReason?'<div style="margin-top:6px;padding:6px 10px;background:rgba(231,76,60,0.1);border-radius:8px;font-size:10.5px;color:var(--danger)">دلیل: '+esc(d.rejectedReason)+'</div>':'')+
+        (d.approvedBy?'<div style="margin-top:6px;font-size:10px;color:var(--text-dim)">توسط: '+esc(d.approvedBy)+' — '+timeAgo(d.approvedAt||0)+'</div>':'')+
+        '<div class="doc-actions">'+
+          (d.driveFileId?'<button class="mini-btn" onclick="viewDoc(\''+d.id+'\')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>مشاهده</button>':'')+
+          (d.status==='pending'?'<button class="mini-btn danger" onclick="deleteDoc(\''+d.id+'\')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>حذف</button>':'')+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  });
+  el.innerHTML=html;
+}
+
+/* ===== View Document (via Apps Script) ===== */
+function viewDoc(id){
+  var d=myDocs.find(function(x){return x.id===id;});
+  if(!d||!d.driveFileId){showToast('فایل پیدا نشد','error');return;}
+  var url=APPS_SCRIPT_URL+'?action=view&fileId='+encodeURIComponent(d.driveFileId)+'&token='+encodeURIComponent(SECRET_TOKEN);
+  window.open(url,'_blank');
+}
+
+/* ===== Delete Document ===== */
+async function deleteDoc(id){
+  if(!confirm('این سند حذف شود؟'))return;
+  try{
+    await db.collection('documents').doc(id).delete();
+    showToast('سند حذف شد','error');
+    loadMyDocuments();
+  }catch(e){showToast('خطا','error');}
+}
+
+/* ===== Load Scholarships ===== */
+async function loadScholarships(){
+  var el=document.getElementById('schList');
+  if(!db){el.innerHTML='<div class="empty"><p>Firebase متصل نیست</p></div>';return;}
+  try{
+    var snap=await db.collection('scholarships').get();
+    allScholarships=[];
+    snap.forEach(function(doc){allScholarships.push(Object.assign({id:doc.id},doc.data()));});
+    allScholarships.sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0);});
+    renderScholarships();
+  }catch(e){console.error(e);el.innerHTML='<div class="empty"><p>خطا</p></div>';}
+}
+
+function renderScholarships(){
+  var el=document.getElementById('schList');
+  if(allScholarships.length===0){
+    el.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/></svg><p>هنوز بورسیه‌ای ثبت نشده</p></div>';
+    return;
+  }
+  var html='';
+  allScholarships.forEach(function(s){
+    var deadline='';
+    if(s.deadline){
+      var d=new Date(s.deadline);var now=new Date();
+      var days=Math.ceil((d-now)/(1000*60*60*24));
+      var txt=days>0?(toPersian(days)+' روز باقی‌مانده'):'مهلت تمام شده';
+      deadline='<div class="sch-deadline">📅 ددلاین: '+toJalali(s.deadline)+' — '+txt+'</div>';
+    }
+    html+='<div class="sch-item">'+
+      '<div class="sch-head"><div class="sch-title">'+esc(s.title)+'</div>'+(s.country?'<span class="sch-country">'+esc(s.country)+'</span>':'')+'</div>'+
+      '<div class="sch-info">'+
+        (s.university?'<strong>دانشگاه:</strong> '+esc(s.university)+'<br>':'')+
+        (s.degree?'<strong>مقطع:</strong> '+esc(s.degree)+'<br>':'')+
+        (s.amount?'<strong>مبلغ:</strong> '+esc(s.amount)+'<br>':'')+
+        (s.description?esc(s.description):'')+
+      '</div>'+
+      deadline+
+      (s.link?'<a class="sch-link" href="'+esc(s.link)+'" target="_blank"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>مشاهده جزئیات</a>':'')+
+    '</div>';
+  });
+  el.innerHTML=html;
+}
+
+/* ===== Tabs ===== */
+document.querySelectorAll('.tab').forEach(function(el){
+  el.addEventListener('click',function(){
+    var tab=el.dataset.tab;
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+    el.classList.add('active');
+    document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+    document.getElementById('sec-'+tab).classList.add('active');
+    if(tab==='documents')loadMyDocuments();
+    if(tab==='scholarships')loadScholarships();
+    window.scrollTo(0,0);
+  });
+});
+
+/* ===== Init ===== */
+(function init(){
+  if(!checkAuth())return;
+  applyTheme();initFirebase();
+  document.getElementById('userNameHeader').textContent=SESSION.name;
+  document.getElementById('userNameDisplay').textContent=SESSION.name;
+  document.getElementById('userPhoneDisplay').textContent=SESSION.phone||'';
+  loadMyDocuments();
+  loadScholarships();
+})();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw-geo.js',{scope:'./'}).catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
