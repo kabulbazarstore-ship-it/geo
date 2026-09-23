@@ -7,6 +7,7 @@
 <title>ثبت‌نام مشتری | GEO</title>
 <link rel="manifest" href="manifest-geo.json">
 <link rel="icon" type="image/png" href="icons/geo-192.png">
+<link rel="apple-touch-icon" href="icons/geo-192.png">
 <style>
 :root{--navy:#0a1929;--navy-2:#102a43;--navy-3:#1a3a5c;--gold:#d4af37;--gold-2:#f4d03f;--gold-soft:rgba(212,175,55,0.15);--text:#e8eef5;--text-dim:#8ba3bd;--card:#132f4c;--border:rgba(212,175,55,0.22);--danger:#e74c3c;--success:#2ecc71}
 body.light{--navy:#f5f7fa;--navy-2:#fff;--navy-3:#e8eef5;--text:#1a2942;--text-dim:#6b7d95;--card:#fff;--border:rgba(212,175,55,0.35)}
@@ -110,7 +111,7 @@ body.light .form-box{box-shadow:0 20px 60px rgba(0,0,0,0.08)}
         <input type="tel" id="regPhone" placeholder="شماره واتساپ (07xxxxxxxx)" inputmode="numeric">
         <svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       </div>
-      <div class="input-hint">این شماره برای ورود و تماس استفاده می‌شود</div>
+      <div class="input-hint">این شماره برای ورود استفاده می‌شود</div>
 
       <div class="input-wrap">
         <input type="email" id="regEmail" placeholder="ایمیل (اختیاری)" inputmode="email">
@@ -170,6 +171,9 @@ var K_THEME = 'geo_theme';
 var K_SESSION = 'geo_session';
 var K_REMEMBERED_CUSTOMER = 'geo_remembered_customer';
 var db = null;
+
+/* ⚠️ توکن جدید */
+var SECRET_TOKEN = 'geo-2024-secure-x9k2m7p4q8n3w5e1';
 
 function applyTheme(){
   var t = localStorage.getItem(K_THEME) || 'dark';
@@ -245,7 +249,7 @@ async function doRegister(){
   btn.disabled = true;
 
   try {
-    /* Check if phone already registered */
+    /* چک تکراری بودن شماره */
     if(db){
       var existSnap = await db.collection(GEO_SETTINGS.COLLECTION_CUSTOMERS)
         .where('phone', '==', phone).limit(1).get();
@@ -270,7 +274,7 @@ async function doRegister(){
       status: 'active'
     };
 
-    /* Save to Firestore */
+    /* ذخیره در Firestore */
     if(db){
       try {
         await db.collection(GEO_SETTINGS.COLLECTION_CUSTOMERS).doc(customerId).set(customerData);
@@ -285,7 +289,7 @@ async function doRegister(){
       } catch(e){ console.warn('Firestore:', e); }
     }
 
-    /* Save session */
+    /* ذخیره session */
     var session = {
       role: 'customer',
       userId: customerId,
@@ -297,9 +301,9 @@ async function doRegister(){
     };
     localStorage.setItem(K_SESSION, JSON.stringify(session));
 
-    /* Remember customer if checkbox */
+    /* ذخیره برای ورود سریع */
     if(remember){
-      localStorage.setItem(K_REMEMBERED_CUSTOMER, JSON.stringify({ phone: phone, name: name }));
+      localStorage.setItem(K_REMEMBERED_CUSTOMER, JSON.stringify({ phone: phone, name: name, password: pass }));
     } else {
       localStorage.removeItem(K_REMEMBERED_CUSTOMER);
     }
@@ -317,7 +321,7 @@ async function doRegister(){
   }
 }
 
-/* Auto-fill remembered phone */
+/* Auto-fill اگه قبلاً ثبت‌نام کرده */
 (function(){
   var r = localStorage.getItem(K_REMEMBERED_CUSTOMER);
   if(r){
@@ -329,7 +333,7 @@ async function doRegister(){
   }
 })();
 
-/* If already logged in as customer → go to panel */
+/* اگه قبلاً وارد شده، مستقیم برو به پنل */
 (function(){
   var s = localStorage.getItem(K_SESSION);
   if(s){
