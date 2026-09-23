@@ -398,30 +398,14 @@ body.light .modal-sheet{background:linear-gradient(180deg,#fff 0%,#f5f7fa 100%)}
         <div class="about-title">شرکت فرصت‌های تحصیلی غرجستان</div>
         <div class="about-en">Gharjistan Educational Opportunities</div>
         <div class="about-slogan"><span>غرجستان — دروازه‌ی فرصت‌ها</span></div>
-        <div class="about-services">
-          <strong>خدمات ما:</strong>
-          سیاحتی و گردشگری<br>
-          مشاوره تحصیلی و بورسیه<br>
-          کاریابی و فرصت‌های کاری<br>
-          خدمات درمانی و ترانسفر بیمار<br>
-          خدمات تجاری و مشاوره
-        </div>
-        <div class="about-box">
-          <div class="line">
-            <strong>آدرس:</strong><br>
-            دشت برچی، قلعه نو، روبروی تالار بهار سراب، مارکیت نبوت، منزل ۳، دفتر ۴<br>
-            <strong>تماس:</strong> 0784030240 / 0707846291<br>
-            <strong>کانال واتساپ:</strong><br>
-            <a href="https://whatsapp.com/channel/0029Vb3BpwQFnSzDK62fxA2l" target="_blank">کلیک کنید</a>
-          </div>
-        </div>
+        <div class="about-services"><strong>خدمات ما:</strong>سیاحتی و گردشگری<br>مشاوره تحصیلی و بورسیه<br>کاریابی و فرصت‌های کاری<br>خدمات درمانی و ترانسفر بیمار<br>خدمات تجاری و مشاوره</div>
+        <div class="about-box"><div class="line"><strong>آدرس:</strong><br>دشت برچی، قلعه نو، روبروی تالار بهار سراب، مارکیت نبوت، منزل ۳، دفتر ۴<br><strong>تماس:</strong> 0784030240 / 0707846291<br><strong>کانال واتساپ:</strong><br><a href="https://whatsapp.com/channel/0029Vb3BpwQFnSzDK62fxA2l" target="_blank">کلیک کنید</a></div></div>
         <div class="about-version">نسخه ۱.۰ — بیش از چندین سال تجربه</div>
       </div>
     </section>
   </div>
 </div>
 
-<!-- Customer Modal -->
 <div class="modal-overlay" id="customerModal" onclick="if(event.target===this)closeModal('customerModal')">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -438,7 +422,6 @@ body.light .modal-sheet{background:linear-gradient(180deg,#fff 0%,#f5f7fa 100%)}
   </div>
 </div>
 
-<!-- Document View Modal -->
 <div class="modal-overlay" id="docViewModal" onclick="if(event.target===this)closeModal('docViewModal')">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -447,7 +430,6 @@ body.light .modal-sheet{background:linear-gradient(180deg,#fff 0%,#f5f7fa 100%)}
   </div>
 </div>
 
-<!-- Action Modal -->
 <div class="modal-overlay" id="actionModal" onclick="if(event.target===this)closeModal('actionModal')">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -478,9 +460,10 @@ var CLOUD_CUSTOMERS=[],CLOUD_DOCS=[],CLOUD_SCH=[];
 var docFilter='all';
 var pendingAction=null;
 
-/* Apps Script */
+/* ⚠️ Apps Script URL */
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwslJchKniEldI4bchQ1AlhPhP-D90t6XoVqAnxdCWWg09NFrovqmg8UkX520my-c5Y0w/exec';
-var SECRET_TOKEN = 'geo-secret-2024-kabul-bazar';
+/* ⚠️ توکن جدید */
+var SECRET_TOKEN = 'geo-2024-secure-x9k2m7p4q8n3w5e1';
 
 var CATS={
   income:{'سیاحتی':['فروش بلیط','خدمات ویزا','پکیج تور','رزرو هوتل','ترانسفر','مشاوره سیاحتی'],'تحصیلی':['فیس کورس','فیس امتحان','کتاب و منابع','مشاوره تحصیلی','ترجمه اسناد','پذیرش دانشگاه'],'کاری':['کاریابی','مشاوره کاری','قرارداد کار'],'تجاری':['خدمات تجاری','مشاوره تجاری'],'درمانی':['مشاوره درمانی','رزرو شفاخانه','ترانسفر بیمار'],'غرجستان':['فیس پذیرش','فیس ویزا','مشاوره','ترجمه','سایر خدمات غرجستان'],'سایر':['سایر درآمد']},
@@ -684,7 +667,7 @@ function renderDocs(){
     var docIcon=(d.fileType||'').indexOf('image')>-1?'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>':'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>';
     var statusInfo={pending:{txt:'در انتظار',icon:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'},approved:{txt:'تأیید شده',icon:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>'},rejected:{txt:'رد شده',icon:'<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>'}};
     var s=statusInfo[d.status]||statusInfo.pending;
-    html+='<div class="doc-item"><div class="doc-icon"><svg viewBox="0 0 24 24">'+docIcon+'</svg></div><div class="doc-body"><div class="doc-owner">مشتری: '+esc(d.customerName||'—')+' — '+esc(d.customerPhone||'')+'</div><div class="doc-name">'+esc(d.title)+'</div><div class="doc-type">'+esc(d.type)+' • '+fmtSize(d.fileSize||0)+' • '+timeAgo(d.createdAt)+'</div><span class="doc-status '+d.status+'"><svg viewBox="0 0 24 24">'+s.icon+'</svg>'+s.txt+'</span>'+(d.rejectedReason?'<div style="margin-top:6px;padding:6px 10px;background:rgba(231,76,60,0.1);border-radius:8px;font-size:10.5px;color:var(--danger)">دلیل: '+esc(d.rejectedReason)+'</div>':'')+(d.approvedBy?'<div style="margin-top:6px;font-size:10px;color:var(--text-dim)">'+esc(d.approvedBy)+' — '+timeAgo(d.approvedAt||0)+'</div>':'')+'<div class="doc-actions">'+(d.driveFileId?'<button class="mini-btn" onclick="viewDoc(\''+d.id+'\')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>مشاهده</button>':'')+(d.status==='pending'?'<button class="mini-btn success" onclick="approveDoc(\''+d.id+'\')"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>تأیید</button><button class="mini-btn danger" onclick="rejectDoc(\''+d.id+'\')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>رد</button>':'')+'</div></div></div>';
+    html+='<div class="doc-item"><div class="doc-icon"><svg viewBox="0 0 24 24">'+docIcon+'</svg></div><div class="doc-body"><div class="doc-owner">مشتری: '+esc(d.customerName||'—')+' — '+esc(d.customerPhone||'')+'</div><div class="doc-name">'+esc(d.title)+'</div><div class="doc-type">'+esc(d.type)+' • '+fmtSize(d.fileSize||0)+' • '+timeAgo(d.createdAt)+'</div><span class="doc-status '+d.status+'"><svg viewBox="0 0 24 24">'+s.icon+'</svg>'+s.txt+'</span>'+(d.rejectedReason?'<div style="margin-top:6px;padding:6px 10px;background:rgba(231,76,60,0.1);border-radius:8px;font-size:10.5px;color:var(--danger)">دلیل: '+esc(d.rejectedReason)+'</div>':'')+(d.approvedBy?'<div style="margin-top:6px;font-size:10px;color:var(--text-dim)">'+esc(d.approvedBy)+' — '+timeAgo(d.approvedAt||0)+'</div>':'')+'<div class="doc-actions">'+(d.driveFileId?'<button class="mini-btn" onclick="viewDoc(\''+d.id+'\')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>مشاهده</button>':'')+(d.status==='pending'?'<button class="mini-btn success" onclick="approveDoc(\''+d.id+'\')">تأیید</button><button class="mini-btn danger" onclick="rejectDoc(\''+d.id+'\')">رد</button>':'')+'</div></div></div>';
   });
   el.innerHTML=html;
 }
