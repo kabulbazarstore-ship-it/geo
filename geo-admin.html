@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a1929">
+<title>پنل مدیر | GEO</title>
+<link rel="icon" type="image/png" href="icons/geo-192.png">
+<style>
+:root{--navy:#0a1929;--navy-2:#102a43;--navy-3:#1a3a5c;--gold:#d4af37;--gold-2:#f4d03f;--gold-soft:rgba(212,175,55,0.15);--text:#e8eef5;--text-dim:#8ba3bd;--card:#132f4c;--border:rgba(212,175,55,0.22);--danger:#e74c3c;--success:#2ecc71;--info:#3498db}
+body.light{--navy:#f5f7fa;--navy-2:#fff;--navy-3:#e8eef5;--text:#1a2942;--text-dim:#6b7d95;--card:#fff;--border:rgba(212,175,55,0.35)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{font-family:Tahoma,'Segoe UI',sans-serif;background:var(--navy);color:var(--text);overflow-x:hidden;min-height:100vh;padding-bottom:40px;transition:background .3s,color .3s}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit}
+::-webkit-scrollbar{display:none}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(circle at 15% 15%,rgba(26,58,92,0.85) 0%,transparent 55%),radial-gradient(circle at 85% 85%,rgba(212,175,55,0.1) 0%,transparent 55%),linear-gradient(160deg,#0a1929 0%,#0d2137 50%,#050d17 100%)}
+body.light .bg{background:radial-gradient(circle at 15% 15%,rgba(212,175,55,0.15) 0%,transparent 55%),radial-gradient(circle at 85% 85%,rgba(26,90,150,0.1) 0%,transparent 55%),linear-gradient(160deg,#f5f7fa 0%,#e8eef5 50%,#dfe6ee 100%)}
+.page{position:relative;z-index:2}
+.header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(10,25,41,0.98),rgba(10,25,41,0.92));backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,175,55,0.15);padding:14px}
+body.light .header{background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.92))}
+.header-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.header-brand{display:flex;align-items:center;gap:10px}
+.logo-mini{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.logo-mini img{width:100%;height:100%;object-fit:contain}
+.brand-txt{font-size:13px;font-weight:800;color:var(--gold);line-height:1.2}
+.brand-txt small{display:block;font-size:10px;color:var(--text-dim);font-weight:600;margin-top:1px}
+.header-actions{display:flex;gap:6px}
+.header-btn{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.header-btn:active{transform:scale(0.92)}
+.header-btn svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2}
+.header-btn .sun{display:none}.header-btn .moon{display:block}
+body.light .header-btn .sun{display:block}body.light .header-btn .moon{display:none}
+.header-btn.logout svg{stroke:var(--danger)}
+.wrap{padding:16px 12px 30px;max-width:800px;margin:0 auto}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+@media(min-width:600px){.stats-grid{grid-template-columns:repeat(4,1fr)}}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;position:relative;overflow:hidden}
+.stat-box::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;background:var(--gold)}
+.stat-box.users::before{background:var(--info)}
+.stat-box.incomes::before{background:var(--success)}
+.stat-box.expenses::before{background:var(--danger)}
+.stat-box .ico{width:36px;height:36px;border-radius:10px;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.stat-box .ico svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2}
+.stat-box.users .ico svg{stroke:var(--info)}
+.stat-box.incomes .ico svg{stroke:var(--success)}
+.stat-box.expenses .ico svg{stroke:var(--danger)}
+.stat-box .lbl{font-size:11px;color:var(--text-dim);margin-bottom:4px}
+.stat-box .val{font-size:20px;font-weight:900;color:var(--text);line-height:1.2}
+.stat-box.users .val{color:var(--info)}
+.stat-box.incomes .val{color:var(--success)}
+.stat-box.expenses .val{color:var(--danger)}
+.stat-box .sub{font-size:9.5px;color:var(--text-dim);margin-top:3px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:10px 14px;border-radius:12px;background:var(--card);border:1.5px solid var(--border);font-size:12px;font-weight:700;color:var(--text-dim);display:flex;align-items:center;gap:5px}
+.tab.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.tab svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.section{display:none}
+.section.active{display:block;animation:fadeUp .3s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.block{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
+.block-title{font-size:13px;font-weight:800;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.block-title .lft{display:flex;align-items:center;gap:8px}
+.block-title .accent{display:inline-block;width:4px;height:14px;border-radius:2px;background:linear-gradient(180deg,var(--gold-2),var(--gold))}
+.block-title svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2}
+.item-row{background:var(--navy-2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.item-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.item-icon.income{background:rgba(46,204,113,0.15);border:1px solid rgba(46,204,113,0.3)}
+.item-icon.expense{background:rgba(231,76,60,0.15);border:1px solid rgba(231,76,60,0.3)}
+.item-icon.user{background:rgba(52,152,219,0.15);border:1px solid rgba(52,152,219,0.3)}
+.item-icon.log{background:var(--gold-soft);border:1px solid var(--border)}
+.item-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2}
+.item-icon.income svg{stroke:var(--success)}
+.item-icon.expense svg{stroke:var(--danger)}
+.item-icon.user svg{stroke:var(--info)}
+.item-body{flex:1;min-width:150px}
+.item-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px}
+.item-meta{font-size:10.5px;color:var(--text-dim);display:flex;gap:10px;flex-wrap:wrap}
+.item-meta span{display:flex;align-items:center;gap:3px}
+.item-amount{font-size:14px;font-weight:900;white-space:nowrap}
+.item-amount.income{color:var(--success)}
+.item-amount.expense{color:var(--danger)}
+.item-amount .cur{font-size:9px;color:var(--text-dim);font-weight:600;display:block;text-align:left}
+.filter-bar{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}
+.filter-bar::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:7px 14px;border-radius:18px;background:var(--navy-2);border:1.5px solid var(--border);font-size:11.5px;font-weight:700;color:var(--text-dim)}
+.chip.active{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+.search-box{position:relative;margin-bottom:12px}
+.search-box input{width:100%;padding:11px 14px 11px 40px;background:var(--navy-2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;outline:none}
+.search-box input:focus{border-color:var(--gold)}
+.search-box svg{position:absolute;top:50%;left:12px;transform:translateY(-50%);width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:2}
+.empty{text-align:center;padding:40px 20px;color:var(--text-dim)}
+.empty svg{width:60px;height:60px;stroke:var(--text-dim);fill:none;stroke-width:1.5;margin-bottom:12px;opacity:0.4}
+.empty p{font-size:13px;font-weight:700;color:var(--text)}
+.loading{text-align:center;padding:40px;color:var(--text-dim)}
+.spinner{width:40px;height:40px;border:3px solid var(--gold-soft);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.form-row{margin-bottom:12px}
+.form-row label{font-size:11.5px;color:var(--text-dim);font-weight:700;display:block;margin-bottom:6px}
+.form-row input,.form-row select{width:100%;padding:12px 14px;background:var(--navy-2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;outline:none}
+.form-row input:focus{border-color:var(--gold)}
+.btn-primary{width:100%;height:48px;border-radius:12px;background:linear-gradient(135deg,#f4d03f,#d4af37);color:var(--navy);font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.btn-primary:active{transform:scale(0.97)}
+.btn-primary svg{width:18px;height:18px;stroke:var(--navy);fill:none;stroke-width:2.5}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--gold);color:var(--navy);padding:12px 24px;border-radius:12px;font-size:13px;font-weight:800;z-index:400;transition:transform .3s;white-space:nowrap;max-width:90%}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--success);color:#fff}
+.toast.error{background:var(--danger);color:#fff}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="page">
+  <header class="header">
+    <div class="header-top">
+      <div class="header-brand">
+        <div class="logo-mini"><img src="icons/geo-192.png" alt="GEO"></div>
+        <div class="brand-txt">پنل مدیریت<small>Gharjistan</small></div>
+      </div>
+      <div class="header-actions">
+        <button class="header-btn" onclick="toggleTheme()">
+          <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="header-btn" onclick="loadAll()"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+        <button class="header-btn logout" onclick="logout()"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="users"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>کارمندان</button>
+      <button class="tab" data-tab="transactions"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg>تراکنش‌ها</button>
+      <button class="tab" data-tab="logs"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>لاگ فعالیت</button>
+      <button class="tab" data-tab="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg>تنظیمات</button>
+    </div>
+
+    <section class="section active" id="sec-users">
+      <div class="block">
+        <div class="block-title"><div class="lft"><span class="accent"></span><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>کارمندان ثبت‌شده</div><span id="userCount" style="font-size:11px;color:var(--text-dim)"></span></div>
+        <div id="usersList"><div class="loading"><div class="spinner"></div><p>در حال بارگذاری...</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="sec-transactions">
+      <div class="block">
+        <div class="block-title"><div class="lft"><span class="accent"></span><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/></svg>همه تراکنش‌ها</div></div>
+        <div class="filter-bar">
+          <button class="chip active" data-type="all" onclick="setAdminType('all')">همه</button>
+          <button class="chip" data-type="income" onclick="setAdminType('income')">درآمد</button>
+          <button class="chip" data-type="expense" onclick="setAdminType('expense')">مصرف</button>
+        </div>
+        <div class="search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="txSearch" placeholder="جستجو..." oninput="renderAdminTxs()"></div>
+        <div id="adminTxList"><div class="loading"><div class="spinner"></div><p>در حال بارگذاری...</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="sec-logs">
+      <div class="block">
+        <div class="block-title"><div class="lft"><span class="accent"></span><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>لاگ فعالیت‌ها</div></div>
+        <div id="logsList"><div class="loading"><div class="spinner"></div><p>در حال بارگذاری...</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="sec-settings">
+      <div class="block">
+        <div class="block-title"><div class="lft"><span class="accent"></span><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>تغییر رمز کارمندان</div></div>
+        <div class="form-row"><label>رمز جدید کارمندان</label><input type="text" id="newEmployeePass" placeholder="رمز جدید"></div>
+        <button class="btn-primary" onclick="updateEmployeePass()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>ذخیره</button>
+        <p style="font-size:11px;color:var(--text-dim);margin-top:10px;line-height:1.7">با تغییر این رمز، همه کارمندان باید با رمز جدید وارد شوند.</p>
+      </div>
+
+      <div class="block">
+        <div class="block-title"><div class="lft"><span class="accent"></span><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/></svg>تغییر رمز مدیر</div></div>
+        <div class="form-row"><label>رمز فعلی مدیر</label><input type="password" id="curAdminPass" placeholder="رمز فعلی"></div>
+        <div class="form-row"><label>رمز جدید مدیر</label><input type="password" id="newAdminPass" placeholder="رمز جدید (حداقل ۶ کاراکتر)"></div>
+        <div class="form-row"><label>تأیید رمز جدید</label><input type="password" id="confirmAdminPass" placeholder="تأیید"></div>
+        <button class="btn-primary" onclick="updateAdminPass()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/></svg>ذخیره رمز مدیر</button>
+      </div>
+
+      <div class="block">
+        <div class="block-title"><div class="lft"><span class="accent"></span><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>خروجی داده‌های ابری</div></div>
+        <button class="btn-primary" onclick="exportCloudCSV()"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>دانلود همه تراکنش‌های ابری (CSV)</button>
+      </div>
+
+      <div class="block">
+        <div class="block-title"><div class="lft"><span class="accent"></span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>اطلاعات</div></div>
+        <p style="font-size:12px;color:var(--text-dim);line-height:1.9">
+          <strong style="color:var(--gold)">GEO Admin Panel v1.0</strong><br>
+          همه داده‌ها از Firebase Firestore خوانده می‌شوند.<br>
+          برای دسترسی از هر جای دنیا، فقط با این صفحه وارد شوید.
+        </p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+var K_THEME='geo_theme',K_SESSION='geo_session';
+var SESSION=null,db=null;
+var CLOUD_TXS=[],CLOUD_USERS=[],CLOUD_LOGS=[];
+var adminTypeFilter='all';
+
+function toPersian(n){var p=['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];return String(n).replace(/\d/g,function(d){return p[d];});}
+function fmt(n){n=Math.round(n*100)/100;return toPersian(n.toLocaleString('en-US'));}
+function esc(s){if(s===null||s===undefined)return '';return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function showToast(msg,type){var el=document.getElementById('toast');el.textContent=msg;el.className='toast show'+(type?' '+type:'');clearTimeout(el._t);el._t=setTimeout(function(){el.className='toast';},2400);}
+function toJalali(iso){
+  if(!iso)return '';
+  var p=iso.split('-');var gy=parseInt(p[0]),gm=parseInt(p[1]),gd=parseInt(p[2]);
+  var gdm=[0,31,59,90,120,151,181,212,243,273,304,334];
+  var jy=(gy<=1600)?0:979;gy-=(gy<=1600)?621:1600;
+  var gy2=(gm>2)?(gy+1):gy;
+  var days=(365*gy)+Math.floor((gy2+3)/4)-Math.floor((gy2+99)/100)+Math.floor((gy2+399)/400)-80+gd+gdm[gm-1];
+  jy+=33*Math.floor(days/12053);days%=12053;jy+=4*Math.floor(days/1461);days%=1461;
+  if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365;}
+  var jm=(days<186)?1+Math.floor(days/31):7+Math.floor((days-186)/30);
+  var jd=1+((days<186)?(days%31):((days-186)%30));
+  var months=['حمل','ثور','جوزا','سرطان','اسد','سنبله','میزان','عقرب','قوس','جدی','دلو','حوت'];
+  return toPersian(jd)+' '+months[jm-1]+' '+toPersian(jy);
+}
+function timeAgo(ts){var s=Math.floor((Date.now()-ts)/1000);if(s<60)return 'همین الان';if(s<3600)return Math.floor(s/60)+' دقیقه پیش';if(s<86400)return Math.floor(s/3600)+' ساعت پیش';return Math.floor(s/86400)+' روز پیش';}
+function applyTheme(){var t=localStorage.getItem(K_THEME)||'dark';document.body.classList.toggle('light',t==='light');var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.content=t==='light'?'#f5f7fa':'#0a1929';}
+function toggleTheme(){var t=localStorage.getItem(K_THEME)||'dark';localStorage.setItem(K_THEME,t==='light'?'dark':'light');applyTheme();}
+
+function checkAuth(){var s=localStorage.getItem(K_SESSION);if(!s){location.replace('geo-login.html');return false;}try{var d=JSON.parse(s);if(!d||!d.loggedIn||d.role!=='admin'){location.replace('geo-login.html');return false;}SESSION=d;return true;}catch(e){location.replace('geo-login.html');return false;}}
+function logout(){localStorage.removeItem(K_SESSION);location.replace('geo-login.html');}
+
+function initFirebase(){if(typeof firebase==='undefined')return false;try{if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);db=firebase.firestore();return true;}catch(e){return false;}}
+
+async function loadAll(){
+  if(!db){showToast('Firebase متصل نیست','error');return;}
+  try{
+    var uSnap=await db.collection(GEO_SETTINGS.COLLECTION_USERS).get();
+    CLOUD_USERS=[];uSnap.forEach(function(doc){CLOUD_USERS.push(Object.assign({id:doc.id},doc.data()));});
+    var tSnap=await db.collection(GEO_SETTINGS.COLLECTION_TX).orderBy('serverTime','desc').limit(500).get();
+    CLOUD_TXS=[];tSnap.forEach(function(doc){CLOUD_TXS.push(Object.assign({id:doc.id},doc.data()));});
+    var lSnap=await db.collection(GEO_SETTINGS.COLLECTION_LOGS).orderBy('timestamp','desc').limit(200).get();
+    CLOUD_LOGS=[];lSnap.forEach(function(doc){CLOUD_LOGS.push(Object.assign({id:doc.id},doc.data()));});
+    renderStats();renderUsers();renderAdminTxs();renderLogs();
+  }catch(e){console.error(e);showToast('خطا در بارگذاری','error');}
+}
+
+function renderStats(){
+  var now=new Date();var todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime();
+  var txToday=CLOUD_TXS.filter(function(t){return t.serverTime>=todayStart;});
+  var incToday=txToday.filter(function(t){return t.type==='income';});
+  var expToday=txToday.filter(function(t){return t.type==='expense';});
+  var incSum=incToday.reduce(function(s,t){return s+(t.currency==='USD'?t.amount*70:t.amount);},0);
+  var expSum=expToday.reduce(function(s,t){return s+(t.currency==='USD'?t.amount*70:t.amount);},0);
+  var html=''
+    +'<div class="stat-box users"><div class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="lbl">کارمندان</div><div class="val">'+toPersian(CLOUD_USERS.length)+'</div><div class="sub">ثبت‌شده در سیستم</div></div>'
+    +'<div class="stat-box"><div class="ico"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg></div><div class="lbl">تراکنش‌های امروز</div><div class="val">'+toPersian(txToday.length)+'</div><div class="sub">کل: '+toPersian(CLOUD_TXS.length)+'</div></div>'
+    +'<div class="stat-box incomes"><div class="ico"><svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></div><div class="lbl">ورودی امروز</div><div class="val">'+toPersian(incToday.length)+'</div><div class="sub">'+fmt(incSum)+' ؋</div></div>'
+    +'<div class="stat-box expenses"><div class="ico"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div><div class="lbl">خروجی امروز</div><div class="val">'+toPersian(expToday.length)+'</div><div class="sub">'+fmt(expSum)+' ؋</div></div>';
+  document.getElementById('statsGrid').innerHTML=html;
+}
+
+function renderUsers(){
+  document.getElementById('userCount').textContent=toPersian(CLOUD_USERS.length)+' کاربر';
+  var el=document.getElementById('usersList');
+  if(CLOUD_USERS.length===0){el.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p>هنوز کارمندی ثبت نشده</p></div>';return;}
+  var html='';
+  CLOUD_USERS.forEach(function(u){
+    var userTxs=CLOUD_TXS.filter(function(t){return t.userId===u.id;});
+    var inc=userTxs.filter(function(t){return t.type==='income';}).length;
+    var exp=userTxs.filter(function(t){return t.type==='expense';}).length;
+    var incSum=userTxs.filter(function(t){return t.type==='income';}).reduce(function(s,t){return s+(t.currency==='USD'?t.amount*70:t.amount);},0);
+    var expSum=userTxs.filter(function(t){return t.type==='expense';}).reduce(function(s,t){return s+(t.currency==='USD'?t.amount*70:t.amount);},0);
+    html+='<div class="item-row"><div class="item-icon user"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="item-body"><div class="item-title">'+esc(u.name)+'</div><div class="item-meta"><span>آخرین ورود: '+timeAgo(u.lastLogin||u.createdAt)+'</span><span>'+toPersian(u.loginCount||1)+' بار ورود</span></div><div class="item-meta" style="margin-top:6px"><span style="color:var(--success)">↑ '+toPersian(inc)+' ورودی — '+fmt(incSum)+' ؋</span><span style="color:var(--danger)">↓ '+toPersian(exp)+' خروجی — '+fmt(expSum)+' ؋</span></div></div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function setAdminType(t){adminTypeFilter=t;document.querySelectorAll('#sec-transactions [data-type]').forEach(function(c){c.classList.toggle('active',c.dataset.type===t);});renderAdminTxs();}
+
+function renderAdminTxs(){
+  var q=(document.getElementById('txSearch').value||'').trim().toLowerCase();
+  var list=CLOUD_TXS.filter(function(t){
+    if(adminTypeFilter!=='all'&&t.type!==adminTypeFilter)return false;
+    if(q){var s=(t.cat+' '+t.subcat+' '+t.customer+' '+t.desc+' '+t.userName).toLowerCase();if(s.indexOf(q)===-1)return false;}
+    return true;
+  });
+  var el=document.getElementById('adminTxList');
+  if(list.length===0){el.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>چیزی یافت نشد</p></div>';return;}
+  var html='';
+  list.forEach(function(t){
+    var cls=t.type==='income'?'income':'expense';var sign=t.type==='income'?'+':'−';
+    var icon=t.type==='income'?'<line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>':'<line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>';
+    var cur=t.currency==='USD'?'دالر':'افغانی';
+    html+='<div class="item-row"><div class="item-icon '+cls+'"><svg viewBox="0 0 24 24">'+icon+'</svg></div><div class="item-body"><div class="item-title">'+esc(t.cat)+(t.subcat?' — '+esc(t.subcat):'')+'</div><div class="item-meta"><span style="color:var(--info)">'+esc(t.userName||'—')+'</span><span>'+toJalali(t.date)+'</span><span>'+timeAgo(t.serverTime||t.createdAt)+'</span>'+(t.customer?'<span>'+esc(t.customer)+'</span>':'')+'</div></div><div class="item-amount '+cls+'">'+sign+fmt(t.amount)+'<span class="cur">'+cur+'</span></div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function renderLogs(){
+  var el=document.getElementById('logsList');
+  if(CLOUD_LOGS.length===0){el.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><p>هنوز لاگی ثبت نشده</p></div>';return;}
+  var actionNames={'login':'ورود به سیستم','logout':'خروج از سیستم','page_open':'باز کردن صفحه','add_tx':'افزودن تراکنش','edit_tx':'ویرایش تراکنش','delete_tx':'حذف تراکنش','add_customer':'افزودن مشتری','delete_customer':'حذف مشتری','export_backup':'دانلود پشتیبان','import_backup':'بازیابی پشتیبان'};
+  var html='';
+  CLOUD_LOGS.forEach(function(l){
+    html+='<div class="item-row"><div class="item-icon log"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="item-body"><div class="item-title">'+(actionNames[l.action]||l.action)+'</div><div class="item-meta"><span style="color:var(--info)">'+esc(l.userName||'—')+'</span><span>'+timeAgo(l.timestamp)+'</span>'+(l.details?'<span>'+esc(l.details)+'</span>':'')+'</div></div></div>';
+  });
+  el.innerHTML=html;
+}
+
+async function updateEmployeePass(){
+  var p=document.getElementById('newEmployeePass').value.trim();
+  if(p.length<4){showToast('رمز حداقل ۴ کاراکتر','error');return;}
+  try{await db.collection(GEO_SETTINGS.COLLECTION_SETTINGS).doc('passwords').set({employee:p},{merge:true});showToast('رمز کارمندان تغییر کرد','success');document.getElementById('newEmployeePass').value='';}catch(e){showToast('خطا','error');}
+}
+
+async function updateAdminPass(){
+  var cur=document.getElementById('curAdminPass').value;
+  var nw=document.getElementById('newAdminPass').value;
+  var cf=document.getElementById('confirmAdminPass').value;
+  if(nw.length<6){showToast('رمز مدیر حداقل ۶ کاراکتر','error');return;}
+  if(nw!==cf){showToast('رمز جدید و تأیید یکسان نیستند','error');return;}
+  try{
+    var doc=await db.collection(GEO_SETTINGS.COLLECTION_SETTINGS).doc('passwords').get();
+    var stored=(doc.exists&&doc.data().admin)||GEO_SETTINGS.ADMIN_PASSWORD;
+    if(cur!==stored){showToast('رمز فعلی اشتباه است','error');return;}
+    await db.collection(GEO_SETTINGS.COLLECTION_SETTINGS).doc('passwords').set({admin:nw},{merge:true});
+    showToast('رمز مدیر تغییر کرد','success');
+    document.getElementById('curAdminPass').value='';document.getElementById('newAdminPass').value='';document.getElementById('confirmAdminPass').value='';
+  }catch(e){showToast('خطا','error');}
+}
+
+function exportCloudCSV(){
+  var rows=[['تاریخ','کارمند','نوع','دسته','زیردسته','مبلغ','واحد','روش','مشتری','توضیحات']];
+  CLOUD_TXS.forEach(function(t){rows.push([t.date,t.userName||'',t.type==='income'?'درآمد':'مصرف',t.cat,t.subcat||'',t.amount,t.currency,t.method||'',t.customer||'',(t.desc||'').replace(/[\r\n,]/g,' ')]);});
+  var csv='\uFEFF'+rows.map(function(r){return r.join(',');}).join('\n');
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='geo-cloud-'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+  showToast('CSV دانلود شد','success');
+}
+
+document.querySelectorAll('.tab').forEach(function(el){
+  el.addEventListener('click',function(){
+    var tab=el.dataset.tab;
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+    el.classList.add('active');
+    document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+    document.getElementById('sec-'+tab).classList.add('active');
+    window.scrollTo(0,0);
+  });
+});
+
+(function init(){
+  if(!checkAuth())return;
+  applyTheme();initFirebase();loadAll();
+  setInterval(function(){if(document.visibilityState==='visible')loadAll();},30000);
+})();
+</script>
+</body>
+</html>
