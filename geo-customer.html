@@ -522,7 +522,8 @@ function renderMyDocs(){
 function viewDoc(id){
   var d=myDocs.find(function(x){return x.id===id;});
   if(!d||!d.driveFileId){showToast('فایل پیدا نشد','error');return;}
-  var url=APPS_SCRIPT_URL+'?action=view&fileId='+encodeURIComponent(d.driveFileId)+'&token='+encodeURIComponent(SECRET_TOKEN);
+  var url='https://drive.google.com/file/d/'+d.driveFileId+'/view';
+window.open(url,'_blank');
   window.open(url,'_blank');
 }
 
