@@ -447,7 +447,8 @@ body.light .modal-sheet{background:linear-gradient(180deg,#fff 0%,#f5f7fa 100%)}
 
 <div class="toast" id="toast"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<!-- بخش دوم: JavaScript -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
@@ -460,9 +461,8 @@ var CLOUD_CUSTOMERS=[],CLOUD_DOCS=[],CLOUD_SCH=[];
 var docFilter='all';
 var pendingAction=null;
 
-/* ⚠️ Apps Script URL */
+/* Apps Script */
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwaXLMtVRR2J-A6DRj4-NkmWGXcifOZUiOPzybaH3n2XrxyhZHChzAD09ZVfzsXMom0IA/exec';
-/* ⚠️ توکن جدید */
 var SECRET_TOKEN = 'geo-2024-secure-x9k2m7p4q8n3w5e1';
 
 var CATS={
@@ -673,14 +673,13 @@ function renderDocs(){
 }
 function viewDoc(id){
   var d=CLOUD_DOCS.find(function(x){return x.id===id;});
-  if(!d)return;
+  if(!d){showToast('سند پیدا نشد','error');return;}
   document.getElementById('docViewTitle').textContent=d.title;
   var html='<div style="font-size:12px;color:var(--text-dim);line-height:2;margin-bottom:12px"><strong style="color:var(--gold)">مشتری:</strong> '+esc(d.customerName||'—')+'<br><strong style="color:var(--gold)">شماره:</strong> '+esc(d.customerPhone||'—')+'<br><strong style="color:var(--gold)">نوع:</strong> '+esc(d.type)+'<br><strong style="color:var(--gold)">اندازه:</strong> '+fmtSize(d.fileSize||0)+'<br>'+(d.notes?'<strong style="color:var(--gold)">یادداشت:</strong> '+esc(d.notes)+'<br>':'')+'</div>';
   if(d.driveFileId){
-    html+='<div style="text-align:center;padding:20px 0"><svg viewBox="0 0 24 24" style="width:80px;height:80px;stroke:var(--gold);fill:none;stroke-width:1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p style="font-size:12px;color:var(--text-dim);margin-top:10px">برای مشاهده امن، دکمه زیر را بزنید</p></div>';
-    var viewUrl=APPS_SCRIPT_URL+'?action=view&fileId='+encodeURIComponent(d.driveFileId)+'&token='+encodeURIComponent(SECRET_TOKEN);
+    var viewUrl='https://drive.google.com/file/d/'+d.driveFileId+'/view';
     html+='<a href="'+viewUrl+'" target="_blank" class="btn-primary" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--navy);fill:none;stroke-width:2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>مشاهده سند</a>';
-  } else {
+  }else{
     html+='<div style="text-align:center;padding:20px;color:var(--text-dim);font-size:12px">فایل در دسترس نیست</div>';
   }
   document.getElementById('docViewBody').innerHTML=html;
@@ -800,3 +799,5 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 </script>
 </body>
 </html>
+</body>
+  </html>
