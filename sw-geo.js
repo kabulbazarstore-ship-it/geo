@@ -1,18 +1,18 @@
 /* ============================================
    GEO — Service Worker
-   شرکت فرصت‌های تحصیلی غرجستان
    ============================================ */
-
-var CACHE = 'geo-v2';
+var CACHE = 'geo-v3';
 var ASSETS = [
+  './index.html',
   './geo-login.html',
   './geo.html',
   './geo-admin.html',
+  './geo-customer.html',
+  './geo-customer-register.html',
   './manifest-geo.json',
   './firebase-config.js'
 ];
 
-/* Install */
 self.addEventListener('install', function(e){
   e.waitUntil(
     caches.open(CACHE).then(function(cache){
@@ -21,7 +21,6 @@ self.addEventListener('install', function(e){
   );
 });
 
-/* Activate */
 self.addEventListener('activate', function(e){
   e.waitUntil(
     caches.keys().then(function(keys){
@@ -32,20 +31,16 @@ self.addEventListener('activate', function(e){
   );
 });
 
-/* Fetch */
 self.addEventListener('fetch', function(e){
   if(e.request.method !== 'GET') return;
-
-  /* Network-only for external APIs and Firebase */
   var url = e.request.url;
   if(url.indexOf('open.er-api.com') > -1 ||
      url.indexOf('firestore.googleapis.com') > -1 ||
      url.indexOf('gstatic.com') > -1 ||
-     url.indexOf('googleapis.com') > -1){
+     url.indexOf('googleapis.com') > -1 ||
+     url.indexOf('google.com') > -1){
     return;
   }
-
-  /* Cache-first for same-origin */
   e.respondWith(
     caches.match(e.request).then(function(cached){
       if(cached) return cached;
@@ -56,7 +51,7 @@ self.addEventListener('fetch', function(e){
         }
         return res;
       }).catch(function(){
-        if(e.request.destination === 'document') return caches.match('./geo-login.html');
+        if(e.request.destination === 'document') return caches.match('./index.html');
       });
     })
   );
