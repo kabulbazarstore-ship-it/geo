@@ -2,7 +2,7 @@
   "name": "GEO — شرکت فرصت‌های تحصیلی غرجستان",
   "short_name": "GEO",
   "description": "سیستم حساب و کتاب شرکت فرصت‌های تحصیلی غرجستان",
-  "start_url": "geo-login.html",
+  "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
